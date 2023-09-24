@@ -1,0 +1,56 @@
+name: Trigger a test release build
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseVersion:
+        description: Version
+        required: true
+        default: "<major>.<minor>.<build>"
+
+      releaseType:
+        description: Type
+        default: "candidate"
+        required: true
+        type: choice
+        options:
+          - "candidate"
+          - "release"
+          - "point_release"
+          - "point_release_candidate"
+
+      releaseCandidate:
+        description: Candidate Number (Optional)
+        required: false
+        default: 0
+        type: number
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Prepare environment
+        run: |
+          git config --global user.email "jafernandez.tamapabay@gmail.com"
+          git config --global user.name "JohnAFernandez"
+      - name: Checkout nightly script
+        uses: actions/checkout@v2
+      - name: Checkout FSO code
+        uses: actions/checkout@v2
+        with:
+          repository: JohnAFernandez/fs2open.github.com
+          path: fs2open.github.com
+          ssh-key: ${{ secrets.KNIGHTLY_TEST_KEY }}
+          submodules: true
+          fetch-depth: 0
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run script
+        run: |
+          python release.py --config $GITHUB_WORKSPACE/config_test.yml --version ${{ github.event.inputs.releaseVersion }} --type ${{ github.event.inputs.releaseType }} --candidate ${{ github.event.inputs.releaseCandidate}}

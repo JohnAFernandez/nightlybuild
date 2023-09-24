@@ -1,0 +1,11 @@
+git:
+  repo: fs2open.github.com
+  branch: master
+
+monitor:
+  check_interval: 20
+
+templates:
+  nightly: templates/nightly.mako
+  release: templates/release.mako
+  installer: templates/installer.mako
