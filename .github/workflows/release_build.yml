@@ -1,3 +1,4 @@
+# TEST VERSION! HOLD ON TO YOUR BUTTS
 name: Trigger a release build
 
 on:
@@ -35,17 +36,12 @@ jobs:
           git config --global user.name "SirKnightly"
       - name: Checkout nightly script
         uses: actions/checkout@v2
-      - name: Decrypt config
-        env:
-          CONFIG_PASSWORD: ${{ secrets.CONFIG_PASSWORD }}
-        run: |
-          gpg --quiet --batch --yes --decrypt --passphrase="$CONFIG_PASSWORD" --output $GITHUB_WORKSPACE/config.yml config.github.yml.gpg
       - name: Checkout FSO code
         uses: actions/checkout@v2
         with:
-          repository: scp-fs2open/fs2open.github.com
-          path: fs2open.github.com
-          ssh-key: ${{ secrets.SIRKNIGHTLY_PRIVATE_KEY }}
+          repository: JohnAFernandez/fs2open
+          path: fs2open
+          ssh-key: ${{ secrets.KNIGHTLY_TEST_KEY }}
           submodules: true
           fetch-depth: 0
       - name: Set up Python 3.8
