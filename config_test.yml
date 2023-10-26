@@ -1,5 +1,5 @@
 git:
-  repo: fs2open.github.com
+  repo: fs2open
   branch: master
 
 monitor:
