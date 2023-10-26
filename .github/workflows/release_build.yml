@@ -54,4 +54,4 @@ jobs:
           pip install -r requirements.txt
       - name: Run script
         run: |
-          python release.py --config $GITHUB_WORKSPACE/config.yml --version ${{ github.event.inputs.releaseVersion }} --type ${{ github.event.inputs.releaseType }} --candidate ${{ github.event.inputs.releaseCandidate}}
+          python release.py --config $GITHUB_WORKSPACE/config_test.yml --version ${{ github.event.inputs.releaseVersion }} --type ${{ github.event.inputs.releaseType }} --candidate ${{ github.event.inputs.releaseCandidate}}
